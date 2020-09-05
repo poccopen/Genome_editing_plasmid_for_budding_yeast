@@ -12,3 +12,8 @@ Features of the plasmid series are:
 |  16-15   |  SpCas9      |  <I> pGAL1 </I>         | <I> pGAL1 </I>             | <I> tCYC1 </I>               | Centromeric    | <I> URA3 </I> |
 |  16-16   |  enAsCas12a  |  <I> pGAL1 </I>         | <I> pGAL1 </I>             | <I> tCYC1 </I>               | Centromeric    | <I> URA3 </I> |
 |  17-31   |  SaCas9      |  <I> pGAL1 </I>         | <I> pGAL1 </I>             | <I> tCYC1 </I>               | Centromeric    | <I> URA3 </I> |
+
+# Scripts for oligo DNA design
+Oligo DNA sequences for the Golden Gate Assembly can be designed by a python script for each plasmid.
+The input file should be made in TSV (Tab Spaced Value) format.
+$ example-target-name [tab] target sequence $
