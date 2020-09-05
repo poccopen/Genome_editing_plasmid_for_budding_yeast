@@ -15,5 +15,19 @@ Features of the plasmid series are:
 
 # Scripts for oligo DNA design
 Oligo DNA sequences for the Golden Gate Assembly can be designed by a python script for each plasmid.
-The input file should be made in TSV (Tab Spaced Value) format.
-$ example-target-name [tab] target sequence $
+## How to use the scripts
+The input file should be made in TSV (Tab Spaced Value) format. An example shown below:
+```
+YFG1a [tab] GCTAGTCGATCGATCGTACG
+YFG1b [tab] CGTGGTCCCACGCGCGCACC
+```
+An appropriate python script should be run in a terminal. An example shown below:
+```
+python sgRNA_oligo_designer_for_(16-15) input_file.tsv
+```
+The code above will make an output file (input_file.tsv.output.txt) below:
+```
+Target name	Target seq	HH + Target seq	Fwd seq for GGA (16-15)	Rev seq for GGA (16-15)
+YFG1a	GCTAGTCGATCGATCGTACG	ACTAGCCTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTCGCTAGTCGATCGATCGTACG	GGAGACTAGCCTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTCGCTAGTCGATCGATCGTACG	AAACCGTACGATCGATCGACTAGCGACGAGCTTACTCGTTTCGTCCTCACGGACTCATCAGGCTAGT
+YFG1b	CGTGGTCCCACGCGCGCACC	ACCACGCTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTCCGTGGTCCCACGCGCGCACC	GGAGACCACGCTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTCCGTGGTCCCACGCGCGCACC	AAACGGTGCGCGCGTGGGACCACGGACGAGCTTACTCGTTTCGTCCTCACGGACTCATCAGCGTGGT
+```
