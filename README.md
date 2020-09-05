@@ -2,7 +2,7 @@
 Features of the plasmid series are:
 - A Cas gene and the cognate sgRNA/crRNA gene are encoded on a single plasmid (<I>CEN</I>/<I>URA3</I>).
 - The target sequence can be inserted by the Golden Gate Assembly.
-- The expression of the Cas gene and/or the sgRNA/crRNA are under the control of the <I>GAL1</I> promoter.
+- The expression of the Cas gene and/or the sgRNA/crRNA gene are under the control of the <I>GAL1</I> promoter.
 - The plasmid can be eliminated by 5-FOA counter-selection after the completion of genome-editing.
 
 # Available plasmids
