@@ -40,10 +40,10 @@ def HHvariable(target):
 
 import PySimpleGUI as sg
 
-frame1 = [  [sg.Radio('SpCas9 + pSNR52-sgRNA', 1, key='-SpCas9_pSNR52-', default=True)],
-            [sg.Radio('SpCas9 + pGAL1-sgRNA', 1, key='-SpCas9_pGAL1-')],
-            [sg.Radio('SaCas9 + pGAL1-sgRNA', 1, key='-SaCas9-')],
-            [sg.Radio('enAsCas12a + pGAL1-crRNA', 1, key='-enAsCas12a-')]]
+frame1 = [  [sg.Radio('SpCas9 + pSNR52-sgRNA (plasmid 15-13)', 1, key='-SpCas9_pSNR52-', default=True)],
+            [sg.Radio('SpCas9 + pGAL1-sgRNA (plasmid 16-15)', 1, key='-SpCas9_pGAL1-')],
+            [sg.Radio('SaCas9 + pGAL1-sgRNA (plasmid 17-31)', 1, key='-SaCas9-')],
+            [sg.Radio('enAsCas12a + pGAL1-crRNA (plasmid 16-16)', 1, key='-enAsCas12a-')]]
 
 layout = [  [sg.Text('Input target name(s) and target sequence(s):')],
             [sg.Multiline(size=(100, 10), key='textbox1')],
@@ -60,7 +60,7 @@ window = sg.Window('Oligo DNA designer for budding yeast genome-editing plasmid 
 
 while True:
     event, values = window.read()
-    if event in ('Design oligo DNA sequence(s)'):
+    if event in ('Design oligo DNA sequences'):
         if values['-SpCas9_pSNR52-'] == True:
             # 変数 HHv
             # hammerhead ribozymeの最初の6塩基（後続の配列に依存して変化する）
