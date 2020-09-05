@@ -20,7 +20,7 @@ Oligo DNA sequences for the Golden Gate Assembly can be designed by a python scr
 - crRNA_oligo_designer_for_(16-16).py
 - sgRNA_oligo_designer_for_(17-31).py 
 ## How to use the scripts
-The input file should be made in TSV (Tab Spaced Value) format. An example shown below:
+The input file should be made in TSV (Tab-Separated Values) format. An example shown below:
 ```
 YFG1a GCTAGTCGATCGATCGTACG
 YFG1b CGTGGTCCCACGCGCGCACC
