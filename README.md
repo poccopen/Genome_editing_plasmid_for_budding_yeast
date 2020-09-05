@@ -39,8 +39,8 @@ You can order the custom oligo DNA synthesis of the two sequences ("Fwd seq for 
 
 # GUI application for oligo DNA design [NEW!]
 Oligo DNA sequences for the Golden Gate Assembly can be designed by a python script (GUI version).
-- sgRNA_crRNA_oligo_designer.py
-
+- sgRNA_crRNA_oligo_designer_GUI.py
+https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/blob/master/images/sgRNA_crRNA_designer_GUI.png
 ## Binary version is available (only for Windows users). [beta-version]
-- sgRNA_crRNA_oligo_designer.exe
+- sgRNA_crRNA_oligo_designer_GUI.exe
 
