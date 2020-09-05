@@ -23,7 +23,7 @@ YFG1b [tab] CGTGGTCCCACGCGCGCACC
 ```
 An appropriate python script should be run in a terminal. An example shown below:
 ```
-python sgRNA_oligo_designer_for_(16-15) input_file.tsv
+python sgRNA_oligo_designer_for_(16-15).py input_file.tsv
 ```
 The code above will make an output file (input_file.tsv.output.txt) below:
 ```
