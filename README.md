@@ -13,6 +13,14 @@ Features of the plasmid series are:
 |  16-16   |  enAsCas12a  |  <I> pGAL1 </I>         | <I> pGAL1 </I>             | <I> tCYC1 </I>               | Centromeric    | <I> URA3 </I> |
 |  17-31   |  SaCas9      |  <I> pGAL1 </I>         | <I> pGAL1 </I>             | <I> tCYC1 </I>               | Centromeric    | <I> URA3 </I> |
 
+Plasmid sequence data are available from the links below:
+
+![Plasmid sequences in SnapGene format](https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/tree/master/Plasmid_sequence_files%20(SnapGene))
+
+![Plasmid sequences in GenBank format](https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/tree/master/Plasmid_sequence_files%20(GenBank))
+
+![Plasmid sequences in plain text format](https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/tree/master/Plasmid_sequence_files%20(Plain%20text))
+
 # Scripts for oligo DNA design
 Oligo DNA sequences for the Golden Gate Assembly can be designed by a python script for each plasmid.
 - sgRNA_oligo_designer_for_(15-13).py
