@@ -49,6 +49,7 @@ https://pysimplegui.readthedocs.io/en/latest/
 ```python sgRNA_crRNA_oligo_designer_GUI.py```
 
 ![GUI](https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/blob/master/images/sgRNA_crRNA_designer_GUI.png)
-## Binary version is available (only for Windows users).
+
+A binary version is available (only for Windows users).
 - sgRNA_crRNA_oligo_designer_GUI.exe
 
