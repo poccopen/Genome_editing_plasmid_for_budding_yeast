@@ -5,7 +5,7 @@ Features of the plasmid series are:
 - The expression of the Cas gene and/or the sgRNA/crRNA gene are under the control of the <I>GAL1</I> promoter.
 - The plasmid can be eliminated by 5-FOA counter-selection after the completion of genome-editing.
 
-# Available plasmids
+## Available plasmids
 |  Number  |  Cas type    |  Promoter for Cas gene  |  Promoter for sgRNA/crRNA  |  Terminator for sgRNA/crRNA  |  Plasmid type  |  Marker gene  |
 | -------- | ------------ | ----------------------- | -------------------------- | ---------------------------- | -------------- | ------------- |
 |  15-13   |  SpCas9      |  <I> pGAL1 </I>         | <I> pSNR52 </I>            | <I> tSUP4 </I>               | Centromeric    | <I> URA3 </I> |
@@ -21,13 +21,13 @@ Plasmid sequence data are available from the links below:
 
 ![Plasmid sequences in plain text format](https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/tree/master/Plasmid_sequence_files%20(Plain%20text))
 
-# Scripts for oligo DNA design
+## Scripts for oligo DNA design
 Oligo DNA sequences for the Golden Gate Assembly can be designed by a python script for each plasmid.
 - sgRNA_oligo_designer_for_(15-13).py
 - sgRNA_oligo_designer_for_(16-15).py
 - crRNA_oligo_designer_for_(16-16).py
 - sgRNA_oligo_designer_for_(17-31).py 
-## How to use the scripts
+### How to use the scripts
 The input file should be made in TSV (Tab-Separated Values) format. An example shown below:
 ```
 YFG1a GCTAGTCGATCGATCGTACG
@@ -45,7 +45,7 @@ YFG1b	CGTGGTCCCACGCGCGCACC	ACCACGCTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTCCGTGGTCCCA
 ```
 You can order the custom oligo DNA synthesis of the two sequences ("Fwd seq for GGA (16-15)" and "Rev seq for GGA (16-15)") for the Golden Gate Assembly.
 
-# GUI application for oligo DNA design
+## GUI application for oligo DNA design
 Oligo DNA sequences for the Golden Gate Assembly can be designed by a python script (graphical user interface version).
 - sgRNA_crRNA_oligo_designer_GUI.py
 
