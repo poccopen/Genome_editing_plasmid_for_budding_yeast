@@ -54,7 +54,9 @@ PySimpleGUI is required to run the script.
 https://pysimplegui.readthedocs.io/en/latest/
 
 
-```python sgRNA_crRNA_oligo_designer_GUI.py```
+```
+python sgRNA_crRNA_oligo_designer_GUI.py
+```
 
 ![GUI](https://github.com/poccopen/Genome_editing_plasmid_for_budding_yeast/blob/master/images/sgRNA_crRNA_designer_GUI.png)
 
