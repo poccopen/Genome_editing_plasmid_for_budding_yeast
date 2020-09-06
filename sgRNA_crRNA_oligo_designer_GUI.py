@@ -50,7 +50,7 @@ layout = [  [sg.Text('Input target name(s) and target sequence(s):')],
             [sg.Button('Clear the input')],
             [sg.Frame('Cas protein + sgRNA/crRNA', frame1)],
             [sg.Button('Design oligo DNA sequences')],
-            [sg.Text('Oligo DNA sequence(s) for Golden Gate Assembly are shown below:')],
+            [sg.Text('Oligo DNA sequences for Golden Gate Assembly are shown below:')],
             [sg.Text('(You can copy the result to a spread sheet application such as Microsoft Excel.)')],
             [sg.Multiline(size=(100, 10), key='textbox2')],
             [sg.Button('Clear the result')]]
