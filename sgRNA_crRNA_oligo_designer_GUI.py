@@ -38,13 +38,16 @@ def HHvariable(target):
         HHvariable = complement_nt(target[n]) + HHvariable
     return HHvariable
 
+# GUIのためにPySimpleGUIモジュールをインポートする
 import PySimpleGUI as sg
 
+# ラジオボタン周りのフレームの設定
 frame1 = [  [sg.Radio('SpCas9 + pSNR52-sgRNA (plasmid 15-13)', 1, key='-SpCas9_pSNR52-', default=True)],
             [sg.Radio('SpCas9 + pGAL1-sgRNA (plasmid 16-15)', 1, key='-SpCas9_pGAL1-')],
             [sg.Radio('SaCas9 + pGAL1-sgRNA (plasmid 17-31)', 1, key='-SaCas9-')],
             [sg.Radio('enAsCas12a + pGAL1-crRNA (plasmid 16-16)', 1, key='-enAsCas12a-')]]
 
+# レイアウト
 layout = [  [sg.Text('Input target name(s) and target sequence(s):')],
             [sg.Multiline(size=(100, 10), key='textbox1')],
             [sg.Button('Clear the input')],
@@ -55,12 +58,17 @@ layout = [  [sg.Text('Input target name(s) and target sequence(s):')],
             [sg.Multiline(size=(100, 10), key='textbox2')],
             [sg.Button('Clear the result')]]
 
-# Create the Window
+# ウィンドウを作成する
 window = sg.Window('Oligo DNA designer for budding yeast genome-editing plasmid construction (v.200905)', layout).Finalize()
 
+# イベントループ
 while True:
     event, values = window.read()
+
+    # 'Design oligo DNA sequences'ボタンが押されたときの動作
     if event in ('Design oligo DNA sequences'):
+
+        # ラジオボタン'SpCas9 + pSNR52-sgRNA (plasmid 15-13)'が押されていたときの動作
         if values['-SpCas9_pSNR52-'] == True:
             # 変数 HHv
             # hammerhead ribozymeの最初の6塩基（後続の配列に依存して変化する）
@@ -82,6 +90,7 @@ while True:
             # 最初の行に出力する文字列
             Header = 'Target name\tTarget seq\tHH + Target seq\tFwd seq for GGA (15-13)\tRev seq for GGA (15-13)'
 
+        # ラジオボタン'SpCas9 + pGAL1-sgRNA (plasmid 16-15)'が押されていたときの動作
         elif values['-SpCas9_pGAL1-'] == True:
             HHv = ''
             HHc = 'CTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTC'
@@ -89,6 +98,7 @@ while True:
             GGA3 = 'AAAC'
             Header = 'Target name\tTarget seq\tHH + Target seq\tFwd seq for GGA (16-15)\tRev seq for GGA (16-15)'
 
+        # ラジオボタン'SaCas9 + pGAL1-sgRNA (plasmid 17-31)'が押されていたときの動作
         elif values['-SaCas9-'] == True:
             HHv = ''
             HHc = 'CTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTC'
@@ -96,6 +106,7 @@ while True:
             GGA3 = 'TAAC'
             Header = 'Target name\tTarget seq\tHH + Target seq\tFwd seq for GGA (17-31)\tRev seq for GGA (17-31)'
 
+        # ラジオボタン'enAsCas12a + pGAL1-crRNA (plasmid 16-16)'が押されていたときの動作
         elif values['-enAsCas12a-'] ==True:
             HHv = ''
             HHc = ''
@@ -111,8 +122,13 @@ while True:
         # ターゲット配列
         Target = ''
 
+        # 入力テキストボックス内のテキストを読み出す
         input_text = values['textbox1']
+
+        # 出力テキストボックスにヘッダーを書き込む
         window['textbox2'].print(Header)
+
+        # 入力テキストボックス内のテキストを1行ごとに分割し、オリゴDNA配列をデザインする
         lines = input_text.split('\n')
         for line in lines:
             line_strip = line.strip()
@@ -127,14 +143,17 @@ while True:
                 R_seq_GGA = GGA3 + complement_seq(HH_Target)
                 window['textbox2'].print(Target_name + '\t'+ Target +'\t' + HH_Target + '\t' + F_seq_GGA + '\t' + R_seq_GGA)
 
+    # 'Clear the input'ボタンが押されたときの動作
     if event in ('Clear the input'):
         values['textbox1'] = ''
         window['textbox1'].update(values['textbox2'])
 
+    # 'Clear the result'ボタンが押されたときの動作
     if event in ('Clear the result'):
         values['textbox2'] = ''
         window['textbox2'].update(values['textbox2'])
 
+    # ウィンドウ右上の×ボタンが押されたときの動作
     if event in (None, 'Close Window'): # if user closes window or clicks cancel
         break
 
