@@ -154,7 +154,7 @@ while True:
         window['textbox2'].update(values['textbox2'])
 
     # ウィンドウ右上の×ボタンが押されたときの動作
-    if event in (None, 'Close Window'): # if user closes window or clicks cancel
+    if event in (None, 'Close Window'):
         break
 
 window.close()
