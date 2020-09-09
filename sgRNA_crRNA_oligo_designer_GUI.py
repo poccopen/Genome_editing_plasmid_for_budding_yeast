@@ -59,11 +59,13 @@ layout = [  [sg.Text('Input target name(s) and target sequence(s):')],
             [sg.Button('Clear the result')]]
 
 # ウィンドウを作成する
-window = sg.Window('Oligo DNA designer for budding yeast genome-editing plasmid construction (v.200905)', layout).Finalize()
+window = sg.Window('Oligo DNA designer for budding yeast genome-editing plasmid construction (v.200909)', layout).Finalize()
 
 # イベントループ
 while True:
     event, values = window.read()
+    HHv = ''
+    HHc = ''
 
     # 'Design oligo DNA sequences'ボタンが押されたときの動作
     if event in ('Design oligo DNA sequences'):
@@ -72,7 +74,7 @@ while True:
         if values['-SpCas9_pSNR52-'] == True:
             # 変数 HHv
             # hammerhead ribozymeの最初の6塩基（後続の配列に依存して変化する）
-            HHv = ''
+            HHv = HHvariable(Target)
 
             # 変数 HHc
             # hammerhead ribozymeの後半の37塩基（固定配列）
@@ -91,23 +93,23 @@ while True:
             Header = 'Target name\tTarget seq\tHH + Target seq\tFwd seq for GGA (15-13)\tRev seq for GGA (15-13)'
 
         # ラジオボタン'SpCas9 + pGAL1-sgRNA (plasmid 16-15)'が押されていたときの動作
-        elif values['-SpCas9_pGAL1-'] == True:
-            HHv = ''
+        if values['-SpCas9_pGAL1-'] == True:
+            HHv = HHvariable(Target)
             HHc = 'CTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTC'
             GGA5 = 'GGAG'
             GGA3 = 'AAAC'
             Header = 'Target name\tTarget seq\tHH + Target seq\tFwd seq for GGA (16-15)\tRev seq for GGA (16-15)'
 
         # ラジオボタン'SaCas9 + pGAL1-sgRNA (plasmid 17-31)'が押されていたときの動作
-        elif values['-SaCas9-'] == True:
-            HHv = ''
+        if values['-SaCas9-'] == True:
+            HHv = HHvariable(Target)
             HHc = 'CTGATGAGTCCGTGAGGACGAAACGAGTAAGCTCGTC'
             GGA5 = 'GGAG'
             GGA3 = 'TAAC'
             Header = 'Target name\tTarget seq\tHH + Target seq\tFwd seq for GGA (17-31)\tRev seq for GGA (17-31)'
 
         # ラジオボタン'enAsCas12a + pGAL1-crRNA (plasmid 16-16)'が押されていたときの動作
-        elif values['-enAsCas12a-'] ==True:
+        if values['-enAsCas12a-'] ==True:
             HHv = ''
             HHc = ''
             GGA5 = 'AGAT'
@@ -136,7 +138,6 @@ while True:
             if len(line_split) == 2:
                 Target_name = line_split[0]
                 Target = line_split[1]
-                HHv = HHvariable(Target)
                 HH = HHv + HHc
                 HH_Target = HH + Target
                 F_seq_GGA = GGA5 + HH_Target
