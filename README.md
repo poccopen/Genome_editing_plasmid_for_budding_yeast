@@ -65,6 +65,5 @@ A binary version is available (only for Windows users).
 
 
 ## Scripts to identify "editable" nucleotides and "editable" ORFs at the 5' end in the budding yeast reference genome
-Editable_fraction_of_yeast_genome.py
-
-ORFs_editable_at_the_5_ends.py
+- Editable_fraction_of_yeast_genome.py
+- ORFs_editable_at_the_5_ends.py
