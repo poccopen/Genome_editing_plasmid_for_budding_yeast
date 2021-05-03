@@ -63,3 +63,5 @@ python sgRNA_crRNA_oligo_designer_GUI.py
 A binary version is available (only for Windows users).
 - sgRNA_crRNA_oligo_designer_GUI.exe
 
+
+##Scripts to identify "editable" nucleotides and "editable" ORFs at the 5' end in the budding yeast reference genome
