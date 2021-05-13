@@ -1,30 +1,19 @@
 # -*- coding: utf-8 -*-
-# argvを取得するためにsysモジュールをインポートする
 import sys
-# 正規表現を使用するためにreモジュールをインポートする
 import re
-# 外部コマンドを使用するためにsubprocessモジュールをインポートする
 import subprocess
-# FASTAファイルを取り扱うためにbiopythonからSeqIOモジュールをインポートする
 from Bio import SeqIO
-# 配列を取り扱いやすくするためにnumpyモジュールをインポートする
 import numpy as np
 
-# コマンドライン引数をargvs（リスト）に格納する
 argvs = sys.argv
-# コマンドライン引数の数を変数argcに格納する
 argc = len(argvs)
 
-# 入力するファイル群が指定されていないときは使い方を表示して終了する
 if argc < 2:
 	print("Usage: python3 {} [reference_seq.fasta]".format(argvs[0]))
 else:
-	# それぞれのファイル名を格納する
 	reference_seq_name = argvs[1]
 
-	#ORFリスト格納用配列を初期化する
 	ORF_list = []
-	#リファレンス配列を読み込む
 	for record in SeqIO.parse(reference_seq_name, 'fasta'):
 		ORF_name = record.id
 		ORF_1000_seq = record.seq
@@ -283,5 +272,3 @@ else:
 		for item in ORF_data:
 			line = line + '\t' +str(item)
 		print(line)
-
-	#print(ORF_list)
