@@ -1,28 +1,18 @@
 # -*- coding: utf-8 -*-
-# argvを取得するためにsysモジュールをインポートする
 import sys
-# 正規表現を使用するためにreモジュールをインポートする
 import re
-# 外部コマンドを使用するためにsubprocessモジュールをインポートする
 import subprocess
-# FASTAファイルを取り扱うためにbiopythonからSeqIOモジュールをインポートする
 from Bio import SeqIO
-# 配列を取り扱いやすくするためにnumpyモジュールをインポートする
 import numpy as np
 
-# コマンドライン引数をargvs（リスト）に格納する
 argvs = sys.argv
-# コマンドライン引数の数を変数argcに格納する
 argc = len(argvs)
 
-# 入力するファイル群が指定されていないときは使い方を表示して終了する
 if argc < 2:
 	print("Usage: python3 {} [reference_genome_seq.fasta]".format(argvs[0]))
 else:
-	# それぞれのファイル名を格納する
 	reference_genome_seq_name = argvs[1]
 
-	#各染色体の塩基長を初期化する
 	chrI_len = 0
 	chrII_len = 0
 	chrIII_len = 0
@@ -41,7 +31,6 @@ else:
 	chrXVI_len = 0
 	chrmt_len = 0
 
-	#リファレンスゲノム配列を読み込んで各染色体の塩基長を得る
 	for record in SeqIO.parse(reference_genome_seq_name, 'fasta'):
 		if record.id == "chrI":
 			chrI_len = len(record.seq)
@@ -79,7 +68,6 @@ else:
 			chrmt_len = len(record.seq)
 	print("Reference genome sequence loaded.")
 
-	#ゲノムサイズ（ミトコンドリアゲノム除く）を計算する
 	total_genome_size = 0
 	total_genome_size += chrI_len
 	total_genome_size += chrII_len
@@ -98,7 +86,6 @@ else:
 	total_genome_size += chrXV_len
 	total_genome_size += chrXVI_len
 
-	#SpCas9向け配列群をゼロで初期化する
 	array_Sp_chrI = np.zeros(chrI_len)
 	array_Sp_chrII = np.zeros(chrII_len)
 	array_Sp_chrIII = np.zeros(chrIII_len)
@@ -117,7 +104,6 @@ else:
 	array_Sp_chrXVI = np.zeros(chrXVI_len)
 	array_Sp_chrmt = np.zeros(chrmt_len)
 
-	#SaCas9向け配列群をゼロで初期化する
 	array_Sa_chrI = np.zeros(chrI_len)
 	array_Sa_chrII = np.zeros(chrII_len)
 	array_Sa_chrIII = np.zeros(chrIII_len)
@@ -136,7 +122,6 @@ else:
 	array_Sa_chrXVI = np.zeros(chrXVI_len)
 	array_Sa_chrmt = np.zeros(chrmt_len)
 
-	#AsCas12a向け配列群をゼロで初期化する
 	array_As_chrI = np.zeros(chrI_len)
 	array_As_chrII = np.zeros(chrII_len)
 	array_As_chrIII = np.zeros(chrIII_len)
@@ -155,7 +140,6 @@ else:
 	array_As_chrXVI = np.zeros(chrXVI_len)
 	array_As_chrmt = np.zeros(chrmt_len)
 
-	#SpCas9+SaCas9向け配列群をゼロで初期化する
 	array_SpSa_chrI = np.zeros(chrI_len)
 	array_SpSa_chrII = np.zeros(chrII_len)
 	array_SpSa_chrIII = np.zeros(chrIII_len)
@@ -174,7 +158,6 @@ else:
 	array_SpSa_chrXVI = np.zeros(chrXVI_len)
 	array_SpSa_chrmt = np.zeros(chrmt_len)
 
-	#SpCas9+AsCas12向け配列群をゼロで初期化する
 	array_SpAs_chrI = np.zeros(chrI_len)
 	array_SpAs_chrII = np.zeros(chrII_len)
 	array_SpAs_chrIII = np.zeros(chrIII_len)
@@ -193,7 +176,6 @@ else:
 	array_SpAs_chrXVI = np.zeros(chrXVI_len)
 	array_SpAs_chrmt = np.zeros(chrmt_len)
 
-	#SaCas9+AsCas12向け配列群をゼロで初期化する
 	array_SaAs_chrI = np.zeros(chrI_len)
 	array_SaAs_chrII = np.zeros(chrII_len)
 	array_SaAs_chrIII = np.zeros(chrIII_len)
@@ -212,7 +194,6 @@ else:
 	array_SaAs_chrXVI = np.zeros(chrXVI_len)
 	array_SaAs_chrmt = np.zeros(chrmt_len)
 
-	#SpCas9+SaCas9+AsCas12向け配列群をゼロで初期化する
 	array_SpSaAs_chrI = np.zeros(chrI_len)
 	array_SpSaAs_chrII = np.zeros(chrII_len)
 	array_SpSaAs_chrIII = np.zeros(chrIII_len)
@@ -231,7 +212,6 @@ else:
 	array_SpSaAs_chrXVI = np.zeros(chrXVI_len)
 	array_SpSaAs_chrmt = np.zeros(chrmt_len)
 
-		#リファレンスゲノム配列を読み込んで各染色体上のターゲット可能位置を調べる
 	for record in SeqIO.parse(reference_genome_seq_name, 'fasta'):
 		if record.id == "chrI":
 			chr_seq = record.seq
@@ -473,14 +453,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrI[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrI[i] = (array_Sp_chrI[i] or array_Sa_chrI[i])
 				array_SpAs_chrI[i] = (array_Sp_chrI[i] or array_As_chrI[i])
 				array_SaAs_chrI[i] = (array_Sa_chrI[i] or array_As_chrI[i])
 				array_SpSaAs_chrI[i] = (array_Sp_chrI[i] or array_Sa_chrI[i] or array_As_chrI[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrI = 0
 			Sa_target_num_chrI = 0
 			As_target_num_chrI = 0
@@ -489,7 +467,6 @@ else:
 			SaAs_target_num_chrI = 0
 			SpSaAs_target_num_chrI = 0
 
-			#各CasについてchrI上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrI = Sp_target_num_chrI + array_Sp_chrI[i]
 				Sa_target_num_chrI = Sa_target_num_chrI + array_Sa_chrI[i]
@@ -499,7 +476,6 @@ else:
 				SaAs_target_num_chrI = SaAs_target_num_chrI + array_SaAs_chrI[i]
 				SpSaAs_target_num_chrI = SpSaAs_target_num_chrI + array_SpSaAs_chrI[i]
 
-			#各CasについてchrIのターケット数、カバレージを出力する
 			print('chrI length: ' + str(len(chr_seq)))
 			print('chrI Sp: ' + str(int(Sp_PAM_chrI)) + ' ' + str(int(Sp_target_num_chrI)) + ' ' + str(Sp_target_num_chrI/len(chr_seq)))
 			print('chrI Sa: ' + str(int(Sa_PAM_chrI)) + ' ' + str(int(Sa_target_num_chrI)) + ' ' + str(Sa_target_num_chrI/len(chr_seq)))
@@ -509,16 +485,13 @@ else:
 			print('chrI SaAs: ' + str(int(SaAs_target_num_chrI)) + ' ' + str(SaAs_target_num_chrI/len(chr_seq)))
 			print('chrI SpSaAs: ' + str(int(SpSaAs_target_num_chrI)) + ' ' + str(SpSaAs_target_num_chrI/len(chr_seq)))
 
-
-
-
 		elif record.id == "chrII":
 			chr_seq = record.seq
 			Sp_PAM_chrII = 0
 			Sa_PAM_chrII = 0
 			As_PAM_chrII = 0
 			for i in range(len(chr_seq)):
-								#SpCas9
+				#SpCas9
 				if i+1 < len(chr_seq):
 					#SpCas9 Forward PAM
 					if chr_seq[i]=='G' and chr_seq[i+1]=='G':
@@ -759,7 +732,6 @@ else:
 				array_SaAs_chrII[i] = (array_Sa_chrII[i] or array_As_chrII[i])
 				array_SpSaAs_chrII[i] = (array_Sp_chrII[i] or array_Sa_chrII[i] or array_As_chrII[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrII = 0
 			Sa_target_num_chrII = 0
 			As_target_num_chrII = 0
@@ -768,7 +740,6 @@ else:
 			SaAs_target_num_chrII = 0
 			SpSaAs_target_num_chrII = 0
 
-			#各CasについてchrII上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrII = Sp_target_num_chrII + array_Sp_chrII[i]
 				Sa_target_num_chrII = Sa_target_num_chrII + array_Sa_chrII[i]
@@ -778,7 +749,6 @@ else:
 				SaAs_target_num_chrII = SaAs_target_num_chrII + array_SaAs_chrII[i]
 				SpSaAs_target_num_chrII = SpSaAs_target_num_chrII + array_SpSaAs_chrII[i]
 
-			#各CasについてchrIIのターケット数、カバレージを出力する
 			print('chrII length: ' + str(len(chr_seq)))
 			print('chrII Sp: ' + str(int(Sp_PAM_chrII)) + ' ' + str(int(Sp_target_num_chrII)) + ' ' + str(Sp_target_num_chrII/len(chr_seq)))
 			print('chrII Sa: ' + str(int(Sa_PAM_chrII)) + ' ' + str(int(Sa_target_num_chrII)) + ' ' + str(Sa_target_num_chrII/len(chr_seq)))
@@ -1028,14 +998,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrIII[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrIII[i] = (array_Sp_chrIII[i] or array_Sa_chrIII[i])
 				array_SpAs_chrIII[i] = (array_Sp_chrIII[i] or array_As_chrIII[i])
 				array_SaAs_chrIII[i] = (array_Sa_chrIII[i] or array_As_chrIII[i])
 				array_SpSaAs_chrIII[i] = (array_Sp_chrIII[i] or array_Sa_chrIII[i] or array_As_chrIII[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrIII = 0
 			Sa_target_num_chrIII = 0
 			As_target_num_chrIII = 0
@@ -1044,7 +1012,6 @@ else:
 			SaAs_target_num_chrIII = 0
 			SpSaAs_target_num_chrIII = 0
 
-			#各CasについてchrIII上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrIII = Sp_target_num_chrIII + array_Sp_chrIII[i]
 				Sa_target_num_chrIII = Sa_target_num_chrIII + array_Sa_chrIII[i]
@@ -1054,7 +1021,6 @@ else:
 				SaAs_target_num_chrIII = SaAs_target_num_chrIII + array_SaAs_chrIII[i]
 				SpSaAs_target_num_chrIII = SpSaAs_target_num_chrIII + array_SpSaAs_chrIII[i]
 
-			#各CasについてchrIIIのターケット数、カバレージを出力する
 			print('chrIII length: ' + str(len(chr_seq)))
 			print('chrIII Sp: ' + str(int(Sp_PAM_chrIII)) + ' ' + str(int(Sp_target_num_chrIII)) + ' ' + str(Sp_target_num_chrIII/len(chr_seq)))
 			print('chrIII Sa: ' + str(int(Sa_PAM_chrIII)) + ' ' + str(int(Sa_target_num_chrIII)) + ' ' + str(Sa_target_num_chrIII/len(chr_seq)))
@@ -1070,7 +1036,7 @@ else:
 			Sa_PAM_chrIV = 0
 			As_PAM_chrIV = 0
 			for i in range(len(chr_seq)):
-								#SpCas9
+				#SpCas9
 				if i+1 < len(chr_seq):
 					#SpCas9 Forward PAM
 					if chr_seq[i]=='G' and chr_seq[i+1]=='G':
@@ -1304,14 +1270,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrIV[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrIV[i] = (array_Sp_chrIV[i] or array_Sa_chrIV[i])
 				array_SpAs_chrIV[i] = (array_Sp_chrIV[i] or array_As_chrIV[i])
 				array_SaAs_chrIV[i] = (array_Sa_chrIV[i] or array_As_chrIV[i])
 				array_SpSaAs_chrIV[i] = (array_Sp_chrIV[i] or array_Sa_chrIV[i] or array_As_chrIV[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrIV = 0
 			Sa_target_num_chrIV = 0
 			As_target_num_chrIV = 0
@@ -1320,7 +1284,6 @@ else:
 			SaAs_target_num_chrIV = 0
 			SpSaAs_target_num_chrIV = 0
 
-			#各CasについてchrIV上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrIV = Sp_target_num_chrIV + array_Sp_chrIV[i]
 				Sa_target_num_chrIV = Sa_target_num_chrIV + array_Sa_chrIV[i]
@@ -1330,7 +1293,6 @@ else:
 				SaAs_target_num_chrIV = SaAs_target_num_chrIV + array_SaAs_chrIV[i]
 				SpSaAs_target_num_chrIV = SpSaAs_target_num_chrIV + array_SpSaAs_chrIV[i]
 
-			#各CasについてchrIVのターケット数、カバレージを出力する
 			print('chrIV length: ' + str(len(chr_seq)))
 			print('chrIV Sp: ' + str(int(Sp_PAM_chrIV)) + ' ' + str(int(Sp_target_num_chrIV)) + ' ' + str(Sp_target_num_chrIV/len(chr_seq)))
 			print('chrIV Sa: ' + str(int(Sa_PAM_chrIV)) + ' ' + str(int(Sa_target_num_chrIV)) + ' ' + str(Sa_target_num_chrIV/len(chr_seq)))
@@ -1346,7 +1308,7 @@ else:
 			Sa_PAM_chrV = 0
 			As_PAM_chrV = 0
 			for i in range(len(chr_seq)):
-								#SpCas9
+				#SpCas9
 				if i+1 < len(chr_seq):
 					#SpCas9 Forward PAM
 					if chr_seq[i]=='G' and chr_seq[i+1]=='G':
@@ -1580,14 +1542,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrV[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrV[i] = (array_Sp_chrV[i] or array_Sa_chrV[i])
 				array_SpAs_chrV[i] = (array_Sp_chrV[i] or array_As_chrV[i])
 				array_SaAs_chrV[i] = (array_Sa_chrV[i] or array_As_chrV[i])
 				array_SpSaAs_chrV[i] = (array_Sp_chrV[i] or array_Sa_chrV[i] or array_As_chrV[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrV = 0
 			Sa_target_num_chrV = 0
 			As_target_num_chrV = 0
@@ -1596,7 +1556,6 @@ else:
 			SaAs_target_num_chrV = 0
 			SpSaAs_target_num_chrV = 0
 
-			#各CasについてchrV上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrV = Sp_target_num_chrV + array_Sp_chrV[i]
 				Sa_target_num_chrV = Sa_target_num_chrV + array_Sa_chrV[i]
@@ -1606,7 +1565,6 @@ else:
 				SaAs_target_num_chrV = SaAs_target_num_chrV + array_SaAs_chrV[i]
 				SpSaAs_target_num_chrV = SpSaAs_target_num_chrV + array_SpSaAs_chrV[i]
 
-			#各CasについてchrVのターケット数、カバレージを出力する
 			print('chrV length: ' + str(len(chr_seq)))
 			print('chrV Sp: ' + str(int(Sp_PAM_chrV)) + ' ' + str(int(Sp_target_num_chrV)) + ' ' + str(Sp_target_num_chrV/len(chr_seq)))
 			print('chrV Sa: ' + str(int(Sa_PAM_chrV)) + ' ' + str(int(Sa_target_num_chrV)) + ' ' + str(Sa_target_num_chrV/len(chr_seq)))
@@ -1622,7 +1580,7 @@ else:
 			Sa_PAM_chrVI = 0
 			As_PAM_chrVI = 0
 			for i in range(len(chr_seq)):
-								#SpCas9
+				#SpCas9
 				if i+1 < len(chr_seq):
 					#SpCas9 Forward PAM
 					if chr_seq[i]=='G' and chr_seq[i+1]=='G':
@@ -1856,14 +1814,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrVI[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrVI[i] = (array_Sp_chrVI[i] or array_Sa_chrVI[i])
 				array_SpAs_chrVI[i] = (array_Sp_chrVI[i] or array_As_chrVI[i])
 				array_SaAs_chrVI[i] = (array_Sa_chrVI[i] or array_As_chrVI[i])
 				array_SpSaAs_chrVI[i] = (array_Sp_chrVI[i] or array_Sa_chrVI[i] or array_As_chrVI[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrVI = 0
 			Sa_target_num_chrVI = 0
 			As_target_num_chrVI = 0
@@ -1872,7 +1828,6 @@ else:
 			SaAs_target_num_chrVI = 0
 			SpSaAs_target_num_chrVI = 0
 
-			#各CasについてchrVI上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrVI = Sp_target_num_chrVI + array_Sp_chrVI[i]
 				Sa_target_num_chrVI = Sa_target_num_chrVI + array_Sa_chrVI[i]
@@ -1882,7 +1837,6 @@ else:
 				SaAs_target_num_chrVI = SaAs_target_num_chrVI + array_SaAs_chrVI[i]
 				SpSaAs_target_num_chrVI = SpSaAs_target_num_chrVI + array_SpSaAs_chrVI[i]
 
-			#各CasについてchrVIのターケット数、カバレージを出力する
 			print('chrVI length: ' + str(len(chr_seq)))
 			print('chrVI Sp: ' + str(int(Sp_PAM_chrVI)) + ' ' + str(int(Sp_target_num_chrVI)) + ' ' + str(Sp_target_num_chrVI/len(chr_seq)))
 			print('chrVI Sa: ' + str(int(Sa_PAM_chrVI)) + ' ' + str(int(Sa_target_num_chrVI)) + ' ' + str(Sa_target_num_chrVI/len(chr_seq)))
@@ -2132,14 +2086,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrVII[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrVII[i] = (array_Sp_chrVII[i] or array_Sa_chrVII[i])
 				array_SpAs_chrVII[i] = (array_Sp_chrVII[i] or array_As_chrVII[i])
 				array_SaAs_chrVII[i] = (array_Sa_chrVII[i] or array_As_chrVII[i])
 				array_SpSaAs_chrVII[i] = (array_Sp_chrVII[i] or array_Sa_chrVII[i] or array_As_chrVII[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrVII = 0
 			Sa_target_num_chrVII = 0
 			As_target_num_chrVII = 0
@@ -2148,7 +2100,6 @@ else:
 			SaAs_target_num_chrVII = 0
 			SpSaAs_target_num_chrVII = 0
 
-			#各CasについてchrVII上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrVII = Sp_target_num_chrVII + array_Sp_chrVII[i]
 				Sa_target_num_chrVII = Sa_target_num_chrVII + array_Sa_chrVII[i]
@@ -2158,7 +2109,6 @@ else:
 				SaAs_target_num_chrVII = SaAs_target_num_chrVII + array_SaAs_chrVII[i]
 				SpSaAs_target_num_chrVII = SpSaAs_target_num_chrVII + array_SpSaAs_chrVII[i]
 
-			#各CasについてchrVIIのターケット数、カバレージを出力する
 			print('chrVII length: ' + str(len(chr_seq)))
 			print('chrVII Sp: ' + str(int(Sp_PAM_chrVII)) + ' ' + str(int(Sp_target_num_chrVII)) + ' ' + str(Sp_target_num_chrVII/len(chr_seq)))
 			print('chrVII Sa: ' + str(int(Sa_PAM_chrVII)) + ' ' + str(int(Sa_target_num_chrVII)) + ' ' + str(Sa_target_num_chrVII/len(chr_seq)))
@@ -2408,14 +2358,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrVIII[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrVIII[i] = (array_Sp_chrVIII[i] or array_Sa_chrVIII[i])
 				array_SpAs_chrVIII[i] = (array_Sp_chrVIII[i] or array_As_chrVIII[i])
 				array_SaAs_chrVIII[i] = (array_Sa_chrVIII[i] or array_As_chrVIII[i])
 				array_SpSaAs_chrVIII[i] = (array_Sp_chrVIII[i] or array_Sa_chrVIII[i] or array_As_chrVIII[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrVIII = 0
 			Sa_target_num_chrVIII = 0
 			As_target_num_chrVIII = 0
@@ -2424,7 +2372,6 @@ else:
 			SaAs_target_num_chrVIII = 0
 			SpSaAs_target_num_chrVIII = 0
 
-			#各CasについてchrVIII上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrVIII = Sp_target_num_chrVIII + array_Sp_chrVIII[i]
 				Sa_target_num_chrVIII = Sa_target_num_chrVIII + array_Sa_chrVIII[i]
@@ -2434,7 +2381,6 @@ else:
 				SaAs_target_num_chrVIII = SaAs_target_num_chrVIII + array_SaAs_chrVIII[i]
 				SpSaAs_target_num_chrVIII = SpSaAs_target_num_chrVIII + array_SpSaAs_chrVIII[i]
 
-			#各CasについてchrVIIIのターケット数、カバレージを出力する
 			print('chrVIII length: ' + str(len(chr_seq)))
 			print('chrVIII Sp: ' + str(int(Sp_PAM_chrVIII)) + ' ' + str(int(Sp_target_num_chrVIII)) + ' ' + str(Sp_target_num_chrVIII/len(chr_seq)))
 			print('chrVIII Sa: ' + str(int(Sa_PAM_chrVIII)) + ' ' + str(int(Sa_target_num_chrVIII)) + ' ' + str(Sa_target_num_chrVIII/len(chr_seq)))
@@ -2684,14 +2630,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrIX[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrIX[i] = (array_Sp_chrIX[i] or array_Sa_chrIX[i])
 				array_SpAs_chrIX[i] = (array_Sp_chrIX[i] or array_As_chrIX[i])
 				array_SaAs_chrIX[i] = (array_Sa_chrIX[i] or array_As_chrIX[i])
 				array_SpSaAs_chrIX[i] = (array_Sp_chrIX[i] or array_Sa_chrIX[i] or array_As_chrIX[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrIX = 0
 			Sa_target_num_chrIX = 0
 			As_target_num_chrIX = 0
@@ -2700,7 +2644,6 @@ else:
 			SaAs_target_num_chrIX = 0
 			SpSaAs_target_num_chrIX = 0
 
-			#各CasについてchrIX上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrIX = Sp_target_num_chrIX + array_Sp_chrIX[i]
 				Sa_target_num_chrIX = Sa_target_num_chrIX + array_Sa_chrIX[i]
@@ -2710,7 +2653,6 @@ else:
 				SaAs_target_num_chrIX = SaAs_target_num_chrIX + array_SaAs_chrIX[i]
 				SpSaAs_target_num_chrIX = SpSaAs_target_num_chrIX + array_SpSaAs_chrIX[i]
 
-			#各CasについてchrIXのターケット数、カバレージを出力する
 			print('chrIX length: ' + str(len(chr_seq)))
 			print('chrIX Sp: ' + str(int(Sp_PAM_chrIX)) + ' ' + str(int(Sp_target_num_chrIX)) + ' ' + str(Sp_target_num_chrIX/len(chr_seq)))
 			print('chrIX Sa: ' + str(int(Sa_PAM_chrIX)) + ' ' + str(int(Sa_target_num_chrIX)) + ' ' + str(Sa_target_num_chrIX/len(chr_seq)))
@@ -2960,14 +2902,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrX[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrX[i] = (array_Sp_chrX[i] or array_Sa_chrX[i])
 				array_SpAs_chrX[i] = (array_Sp_chrX[i] or array_As_chrX[i])
 				array_SaAs_chrX[i] = (array_Sa_chrX[i] or array_As_chrX[i])
 				array_SpSaAs_chrX[i] = (array_Sp_chrX[i] or array_Sa_chrX[i] or array_As_chrX[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrX = 0
 			Sa_target_num_chrX = 0
 			As_target_num_chrX = 0
@@ -2976,7 +2916,6 @@ else:
 			SaAs_target_num_chrX = 0
 			SpSaAs_target_num_chrX = 0
 
-			#各CasについてchrX上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrX = Sp_target_num_chrX + array_Sp_chrX[i]
 				Sa_target_num_chrX = Sa_target_num_chrX + array_Sa_chrX[i]
@@ -2986,7 +2925,6 @@ else:
 				SaAs_target_num_chrX = SaAs_target_num_chrX + array_SaAs_chrX[i]
 				SpSaAs_target_num_chrX = SpSaAs_target_num_chrX + array_SpSaAs_chrX[i]
 
-			#各CasについてchrXのターケット数、カバレージを出力する
 			print('chrX length: ' + str(len(chr_seq)))
 			print('chrX Sp: ' + str(int(Sp_PAM_chrX)) + ' ' + str(int(Sp_target_num_chrX)) + ' ' + str(Sp_target_num_chrX/len(chr_seq)))
 			print('chrX Sa: ' + str(int(Sa_PAM_chrX)) + ' ' + str(int(Sa_target_num_chrX)) + ' ' + str(Sa_target_num_chrX/len(chr_seq)))
@@ -3236,14 +3174,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrXI[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrXI[i] = (array_Sp_chrXI[i] or array_Sa_chrXI[i])
 				array_SpAs_chrXI[i] = (array_Sp_chrXI[i] or array_As_chrXI[i])
 				array_SaAs_chrXI[i] = (array_Sa_chrXI[i] or array_As_chrXI[i])
 				array_SpSaAs_chrXI[i] = (array_Sp_chrXI[i] or array_Sa_chrXI[i] or array_As_chrXI[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrXI = 0
 			Sa_target_num_chrXI = 0
 			As_target_num_chrXI = 0
@@ -3252,7 +3188,6 @@ else:
 			SaAs_target_num_chrXI = 0
 			SpSaAs_target_num_chrXI = 0
 
-			#各CasについてchrXI上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrXI = Sp_target_num_chrXI + array_Sp_chrXI[i]
 				Sa_target_num_chrXI = Sa_target_num_chrXI + array_Sa_chrXI[i]
@@ -3262,7 +3197,6 @@ else:
 				SaAs_target_num_chrXI = SaAs_target_num_chrXI + array_SaAs_chrXI[i]
 				SpSaAs_target_num_chrXI = SpSaAs_target_num_chrXI + array_SpSaAs_chrXI[i]
 
-			#各CasについてchrXIのターケット数、カバレージを出力する
 			print('chrXI length: ' + str(len(chr_seq)))
 			print('chrXI Sp: ' + str(int(Sp_PAM_chrXI)) + ' ' + str(int(Sp_target_num_chrXI)) + ' ' + str(Sp_target_num_chrXI/len(chr_seq)))
 			print('chrXI Sa: ' + str(int(Sa_PAM_chrXI)) + ' ' + str(int(Sa_target_num_chrXI)) + ' ' + str(Sa_target_num_chrXI/len(chr_seq)))
@@ -3512,14 +3446,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrXII[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrXII[i] = (array_Sp_chrXII[i] or array_Sa_chrXII[i])
 				array_SpAs_chrXII[i] = (array_Sp_chrXII[i] or array_As_chrXII[i])
 				array_SaAs_chrXII[i] = (array_Sa_chrXII[i] or array_As_chrXII[i])
 				array_SpSaAs_chrXII[i] = (array_Sp_chrXII[i] or array_Sa_chrXII[i] or array_As_chrXII[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrXII = 0
 			Sa_target_num_chrXII = 0
 			As_target_num_chrXII = 0
@@ -3528,7 +3460,6 @@ else:
 			SaAs_target_num_chrXII = 0
 			SpSaAs_target_num_chrXII = 0
 
-			#各CasについてchrXII上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrXII = Sp_target_num_chrXII + array_Sp_chrXII[i]
 				Sa_target_num_chrXII = Sa_target_num_chrXII + array_Sa_chrXII[i]
@@ -3538,7 +3469,6 @@ else:
 				SaAs_target_num_chrXII = SaAs_target_num_chrXII + array_SaAs_chrXII[i]
 				SpSaAs_target_num_chrXII = SpSaAs_target_num_chrXII + array_SpSaAs_chrXII[i]
 
-			#各CasについてchrXIIのターケット数、カバレージを出力する
 			print('chrXII length: ' + str(len(chr_seq)))
 			print('chrXII Sp: ' + str(int(Sp_PAM_chrXII)) + ' ' + str(int(Sp_target_num_chrXII)) + ' ' + str(Sp_target_num_chrXII/len(chr_seq)))
 			print('chrXII Sa: ' + str(int(Sa_PAM_chrXII)) + ' ' + str(int(Sa_target_num_chrXII)) + ' ' + str(Sa_target_num_chrXII/len(chr_seq)))
@@ -3788,14 +3718,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrXIII[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrXIII[i] = (array_Sp_chrXIII[i] or array_Sa_chrXIII[i])
 				array_SpAs_chrXIII[i] = (array_Sp_chrXIII[i] or array_As_chrXIII[i])
 				array_SaAs_chrXIII[i] = (array_Sa_chrXIII[i] or array_As_chrXIII[i])
 				array_SpSaAs_chrXIII[i] = (array_Sp_chrXIII[i] or array_Sa_chrXIII[i] or array_As_chrXIII[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrXIII = 0
 			Sa_target_num_chrXIII = 0
 			As_target_num_chrXIII = 0
@@ -3804,7 +3732,6 @@ else:
 			SaAs_target_num_chrXIII = 0
 			SpSaAs_target_num_chrXIII = 0
 
-			#各CasについてchrXIII上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrXIII = Sp_target_num_chrXIII + array_Sp_chrXIII[i]
 				Sa_target_num_chrXIII = Sa_target_num_chrXIII + array_Sa_chrXIII[i]
@@ -3814,7 +3741,6 @@ else:
 				SaAs_target_num_chrXIII = SaAs_target_num_chrXIII + array_SaAs_chrXIII[i]
 				SpSaAs_target_num_chrXIII = SpSaAs_target_num_chrXIII + array_SpSaAs_chrXIII[i]
 
-			#各CasについてchrXIIIのターケット数、カバレージを出力する
 			print('chrXIII length: ' + str(len(chr_seq)))
 			print('chrXIII Sp: ' + str(int(Sp_PAM_chrXIII)) + ' ' + str(int(Sp_target_num_chrXIII)) + ' ' + str(Sp_target_num_chrXIII/len(chr_seq)))
 			print('chrXIII Sa: ' + str(int(Sa_PAM_chrXIII)) + ' ' + str(int(Sa_target_num_chrXIII)) + ' ' + str(Sa_target_num_chrXIII/len(chr_seq)))
@@ -4064,14 +3990,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrXIV[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrXIV[i] = (array_Sp_chrXIV[i] or array_Sa_chrXIV[i])
 				array_SpAs_chrXIV[i] = (array_Sp_chrXIV[i] or array_As_chrXIV[i])
 				array_SaAs_chrXIV[i] = (array_Sa_chrXIV[i] or array_As_chrXIV[i])
 				array_SpSaAs_chrXIV[i] = (array_Sp_chrXIV[i] or array_Sa_chrXIV[i] or array_As_chrXIV[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrXIV = 0
 			Sa_target_num_chrXIV = 0
 			As_target_num_chrXIV = 0
@@ -4080,7 +4004,6 @@ else:
 			SaAs_target_num_chrXIV = 0
 			SpSaAs_target_num_chrXIV = 0
 
-			#各CasについてchrXIV上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrXIV = Sp_target_num_chrXIV + array_Sp_chrXIV[i]
 				Sa_target_num_chrXIV = Sa_target_num_chrXIV + array_Sa_chrXIV[i]
@@ -4090,7 +4013,6 @@ else:
 				SaAs_target_num_chrXIV = SaAs_target_num_chrXIV + array_SaAs_chrXIV[i]
 				SpSaAs_target_num_chrXIV = SpSaAs_target_num_chrXIV + array_SpSaAs_chrXIV[i]
 
-			#各CasについてchrXIVのターケット数、カバレージを出力する
 			print('chrXIV length: ' + str(len(chr_seq)))
 			print('chrXIV Sp: ' + str(int(Sp_PAM_chrXIV)) + ' ' + str(int(Sp_target_num_chrXIV)) + ' ' + str(Sp_target_num_chrXIV/len(chr_seq)))
 			print('chrXIV Sa: ' + str(int(Sa_PAM_chrXIV)) + ' ' + str(int(Sa_target_num_chrXIV)) + ' ' + str(Sa_target_num_chrXIV/len(chr_seq)))
@@ -4340,14 +4262,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrXV[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrXV[i] = (array_Sp_chrXV[i] or array_Sa_chrXV[i])
 				array_SpAs_chrXV[i] = (array_Sp_chrXV[i] or array_As_chrXV[i])
 				array_SaAs_chrXV[i] = (array_Sa_chrXV[i] or array_As_chrXV[i])
 				array_SpSaAs_chrXV[i] = (array_Sp_chrXV[i] or array_Sa_chrXV[i] or array_As_chrXV[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrXV = 0
 			Sa_target_num_chrXV = 0
 			As_target_num_chrXV = 0
@@ -4356,7 +4276,6 @@ else:
 			SaAs_target_num_chrXV = 0
 			SpSaAs_target_num_chrXV = 0
 
-			#各CasについてchrXV上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrXV = Sp_target_num_chrXV + array_Sp_chrXV[i]
 				Sa_target_num_chrXV = Sa_target_num_chrXV + array_Sa_chrXV[i]
@@ -4366,7 +4285,6 @@ else:
 				SaAs_target_num_chrXV = SaAs_target_num_chrXV + array_SaAs_chrXV[i]
 				SpSaAs_target_num_chrXV = SpSaAs_target_num_chrXV + array_SpSaAs_chrXV[i]
 
-			#各CasについてchrXVのターケット数、カバレージを出力する
 			print('chrXV length: ' + str(len(chr_seq)))
 			print('chrXV Sp: ' + str(int(Sp_PAM_chrXV)) + ' ' + str(int(Sp_target_num_chrXV)) + ' ' + str(Sp_target_num_chrXV/len(chr_seq)))
 			print('chrXV Sa: ' + str(int(Sa_PAM_chrXV)) + ' ' + str(int(Sa_target_num_chrXV)) + ' ' + str(Sa_target_num_chrXV/len(chr_seq)))
@@ -4616,14 +4534,12 @@ else:
 						if i+3 < len(chr_seq):
 							array_As_chrXVI[i+3] = True
 
-			#複数のCasについてtargetabilityの和を計算する
 			for i in range(len(chr_seq)):
 				array_SpSa_chrXVI[i] = (array_Sp_chrXVI[i] or array_Sa_chrXVI[i])
 				array_SpAs_chrXVI[i] = (array_Sp_chrXVI[i] or array_As_chrXVI[i])
 				array_SaAs_chrXVI[i] = (array_Sa_chrXVI[i] or array_As_chrXVI[i])
 				array_SpSaAs_chrXVI[i] = (array_Sp_chrXVI[i] or array_Sa_chrXVI[i] or array_As_chrXVI[i])
 
-			#各Casについてターゲット数を初期化する
 			Sp_target_num_chrXVI = 0
 			Sa_target_num_chrXVI = 0
 			As_target_num_chrXVI = 0
@@ -4632,7 +4548,6 @@ else:
 			SaAs_target_num_chrXVI = 0
 			SpSaAs_target_num_chrXVI = 0
 
-			#各CasについてchrXVI上のターゲット数を計算する
 			for i in range(len(chr_seq)):
 				Sp_target_num_chrXVI = Sp_target_num_chrXVI + array_Sp_chrXVI[i]
 				Sa_target_num_chrXVI = Sa_target_num_chrXVI + array_Sa_chrXVI[i]
@@ -4642,7 +4557,6 @@ else:
 				SaAs_target_num_chrXVI = SaAs_target_num_chrXVI + array_SaAs_chrXVI[i]
 				SpSaAs_target_num_chrXVI = SpSaAs_target_num_chrXVI + array_SpSaAs_chrXVI[i]
 
-			#各CasについてchrXVIのターケット数、カバレージを出力する
 			print('chrXVI length: ' + str(len(chr_seq)))
 			print('chrXVI Sp: ' + str(int(Sp_PAM_chrXVI)) + ' ' + str(int(Sp_target_num_chrXVI)) + ' ' + str(Sp_target_num_chrXVI/len(chr_seq)))
 			print('chrXVI Sa: ' + str(int(Sa_PAM_chrXVI)) + ' ' + str(int(Sa_target_num_chrXVI)) + ' ' + str(Sa_target_num_chrXVI/len(chr_seq)))
